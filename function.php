@@ -88,7 +88,7 @@ function unlimitedForlevel($cate,$html='--',$pid=0,$level=0){
       $arr[]=$v;
       $arr=array_merge($arr,self::unlimitedForlevel($cate,$html,$v['id']),$level+1);
     }
-    # code...
+    return $arr;
   }
 }
 
