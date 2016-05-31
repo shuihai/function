@@ -79,5 +79,16 @@ function getCategary($arr,$pid=0,$lev=0){
 }
 
 
-
+function unlimitedForlevel($cate,$html='--',$pid=0,$level=0){
+  $arr=array();
+  foreach ($cate as $v) {
+    if($v['pid']==$pid){
+      $v['level']=$level+1;
+      $v['html']=str_repeat($html, $level);
+      $arr[]=$v;
+      $arr=array_merge($arr,self::unlimitedForlevel($cate,$html,$v['id']),$level+1);
+    }
+    # code...
+  }
+}
 
