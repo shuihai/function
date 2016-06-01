@@ -49,3 +49,14 @@ function getCategary($arr,$pid=0,$lev=0){
      return $array;
  }
 
+/*传入一个子id，返回所有的父级分类*/
+function getParents($cate,$id){
+	$arr=array();
+	foreach($cate as $v){
+		if($v['id']==$id){
+			$arr[]=$v;
+			$arr=array_merge(getParents($cate,$v['pid']),$arr);
+		}
+	}
+	return $arr;
+}
