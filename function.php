@@ -21,15 +21,31 @@ function encryption($str,$flag=0){
  * 递归获得树形结构
  */
 function unlimitedForlevel($cate,$html='--',$pid=0,$level=0){
-  $arr=array();
-  foreach ($cate as $v) {
-    if($v['pid']==$pid){
-      $v['level']=$level+1;
-      $v['html']=str_repeat($html, $level);
-      $arr[]=$v;
-      $arr=array_merge($arr,self::unlimitedForlevel($cate,$html,$v['id']),$level+1);
+    $arr=array();
+    foreach ($cate as $v) {
+        if($v['pid']==$pid){
+            $v['level']=$level+1;
+            $v['html']=str_repeat($html, $level);
+            $arr[]=$v;
+            $arr=array_merge($arr,unlimitedForlevel($cate,$html,$v['id'],($level+1)));
+        }
     }
     return $arr;
-  }
 }
+
+
+/* 
+ * 递归获得树形结构
+ */
+function getCategary($arr,$pid=0,$lev=0){
+    $array=array();
+    foreach ($arr as $v){
+        if($v['pid']==$pid){ 
+            $v=array_merge($v,array('lev'=>$lev) );
+            $array[]=$v;   
+            $array=array_merge($array,  getCategary($arr,$v['id'],($lev+1)));
+         }
+     }
+     return $array;
+ }
 
