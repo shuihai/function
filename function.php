@@ -76,3 +76,30 @@ function JSON($array) {
         $json = json_encode($array);
         return urldecode($json);
 }
+
+
+    /**
+     * 根据不同情况返回不同数据格式
+     * @param $data 任何数据 默认为空数组 ，如果是返回json格式的这里规定只允许用数组
+     * @param int $code  错误代码 默认为200
+     * 返回说明：
+     * 一、正常时的返回JSON数据包示例：
+     * 1.一般用于不需要返回内容的情况：{"code": 0, "info": "ok","data":$data}
+     * 二、错误时的返回JSON数据包示例：错误内容用中文 {"code":40001,"info":"错误XXX"}
+     */
+    public function apiReturn($code = 200,$data=""){
+            $info=  statusCode();
+            /* 返回JSON数据格式到客户端 包含状态信息*/
+            header('Content-Type:application/json; charset=utf-8');
+            $error = array(
+                'code'=>$code,
+                'info'=>$info[$code]
+            );
+            if(is_array($data)){
+                $data=array('data'=>$data);
+                $result = array_merge($error,$data);
+            }else{
+                $result = $error;
+            }
+            exit(JSON($result));
+    }
