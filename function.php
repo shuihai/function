@@ -1,6 +1,8 @@
-<?php
-//header('Content-Type:text/html;charset=utf-8');
+/*告诉浏览器utf8编码的反应头*/
+header('Content-Type:text/html;charset=utf-8');
 
+/*前端url字符串的编码*/
+ phoneurl=encodeURI(encodeURI(phoneurl));
 
 /* 
  * 对cookie的值进行加密
