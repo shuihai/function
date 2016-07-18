@@ -65,6 +65,20 @@ function getParents($cate,$id){
 	return $arr;
 }
 
+
+/*传入一个父级id，返回所有的子级分类(返回一维数组)*/
+function getChilds($cate,$pid){
+	$arr=array();
+	foreach($cate as $v){
+		if($v['pid']==$pid){
+                        $arr[]=$v; 
+			$arr=array_merge($arr,getChilds($cate,$v['id']));
+		}
+	}
+	return $arr;
+}
+
+
 /**************************************************************
  *
  *  将数组转换为JSON字符串（兼容中文）
@@ -77,6 +91,31 @@ function JSON($array) {
         arrayRecursive($array,'urlencode',true);
         $json = json_encode($array);
         return urldecode($json);
+}
+
+
+/*JSON辅助方法*/
+function arrayRecursive(&$array, $function, $apply_to_keys_also = false)
+{
+    static $recursive_counter = 0;
+    if (++$recursive_counter > 1000) {
+        die('possible deep recursion attack');
+    }
+    foreach ($array as $key => $value) {
+        if (is_array($value)) {
+            arrayRecursive($array[$key], $function, $apply_to_keys_also);
+        } else {
+            $array[$key] = $function($value);
+        }
+        if ($apply_to_keys_also && is_string($key)) {
+            $new_key = $function($key);
+            if ($new_key != $key) {
+                $array[$new_key] = $array[$key];
+                unset($array[$key]);
+            }
+        }
+    }
+    $recursive_counter--;
 }
 
 
