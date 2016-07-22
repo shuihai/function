@@ -6,6 +6,8 @@ $data = $user->query("select u.id,IF(u.portrait != '',CONCAT('http://".$_SERVER[
 模型的query和execute方法 同样支持预处理机制，例如：
 $model->query('select * from user where id=%d and status=%d',$id,$status);//或者$model->query('select * from user where id=%d and status=%d',array($id,$status));
 
+按拼音排序
+$client->where($where)->order("convert(name using gb2312) ASC")->select();   // 按拼音排序
 
 /*告诉浏览器utf8编码的反应头*/
 header('Content-Type:text/html;charset=utf-8');
