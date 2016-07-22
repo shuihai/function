@@ -158,11 +158,39 @@ function arrayRecursive(&$array, $function, $apply_to_keys_also = false)
  /**
  * 引入excel文件
  * @param $file_name 文件全路径名
- *     	 php上写  $M_store = M("store");
- *       $data = importXls($file_name);
- *       $rs=$M_store->addAll($data);
+ *     	 php上写    
+ *public function importExcel(){
+        if (isset($_FILES['excel']) && !empty($_FILES['excel']['tmp_name']) ) {
+         $upload = new \Think\Upload();// 实例化上传类
+            $upload->maxSize  = 30145728 ;// 设置附件上传大小
+            $upload->exts     = array('xls', 'xlsx');// 设置附件上传类型
+            $upload->rootPath = './Public/attachments/excel/';//文件保存的根目录
+            $upload->savePath = '';// 设置附件上传目录
+            $upload->subName = array('date','Ym');
+            $info   =   $upload->uploadOne($_FILES['excel']);
+            if(!$info) {// 上传错误提示错误信息
+                $this->error($upload->getError());
+            }else{// 上传成功 获取上传文件信息
+                $file_name = './Public/attachments/excel/'.$info['savepath'].$info['savename'];
+            }
+            $M_store = M("store");
+            $data = importXls($file_name);
+            $rs=$M_store->addAll($data);
+            if($rs !== false){
+                $this->success('Excel数据导入成功');
+                unlink($file_name);
+                exit;
+            }else{
+                $this->error('Excel数据导入失败');
+            }
+        } else {
+            $this->error('没有选择excel文件');
+        }
+    }
  
  * @return mixed
+ *
+ *
  */
     function importXls($file_name){
     	import("Org.Util.PHPExcel");
