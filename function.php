@@ -1,3 +1,5 @@
+
+
 sql语句
 $data = $user->query("select u.id,IF(u.portrait != '',CONCAT('http://".$_SERVER['HTTP_HOST'].__APP__."',u.portrait),'')  from user as u;
 
@@ -150,4 +152,42 @@ function arrayRecursive(&$array, $function, $apply_to_keys_also = false)
                 $result = $error;
             }
             exit(JSON($result));
+    }
+    
+    
+ /**
+ * 引入excel文件
+ * @param $file_name 文件全路径名
+ *     	 php上写  $M_store = M("store");
+ *       $data = importXls($file_name);
+ *       $rs=$M_store->addAll($data);
+ 
+ * @return mixed
+ */
+    function importXls($file_name){
+    	import("Org.Util.PHPExcel");
+    	$file_type = explode('.',$file_name)[2];
+    	if(strtolower ( $file_type )=='xls') {//判断excel表类型为2003还是2007
+        	$objReader = PHPExcel_IOFactory::createReader('Excel5');
+    	}elseif(strtolower ( $file_type )=='xlsx') {
+		$objReader = PHPExcel_IOFactory::createReader('Excel2007');
+    	}
+	    $objReader->setReadDataOnly(true);
+	    $objPHPExcel = $objReader->load($file_name,$encode='utf-8');
+	    $sheet = $objPHPExcel->getSheet(0);
+	    $highestRow = $sheet->getHighestRow(); // 取得总行数
+	    $highestColumn = $sheet->getHighestColumn(); // 取得总列数
+	    $arrExcel = $objPHPExcel->getSheet(0)->toArray();
+	    for($i=2;$i<=$highestRow;$i++) {
+	        $data[$i-2]['store_no']= $objPHPExcel->getActiveSheet()->getCell("A".$i)->getValue();
+	        $data[$i-2]['store_name']= $objPHPExcel->getActiveSheet()->getCell("B".$i)->getValue();
+	        $data[$i-2]['address']= $objPHPExcel->getActiveSheet()->getCell("C".$i)->getValue();
+	        $data[$i-2]['contact']= $objPHPExcel->getActiveSheet()->getCell("D".$i)->getValue();
+	        $data[$i-2]['phone']= $objPHPExcel->getActiveSheet()->getCell("E".$i)->getValue();
+	        $data[$i-2]['qq']= $objPHPExcel->getActiveSheet()->getCell("F".$i)->getValue();
+	        $data[$i-2]['province']= $objPHPExcel->getActiveSheet()->getCell("G".$i)->getValue();
+	        $data[$i-2]['city']= $objPHPExcel->getActiveSheet()->getCell("H".$i)->getValue();
+	        $data[$i-2]['district']= $objPHPExcel->getActiveSheet()->getCell("I".$i)->getValue();
+	    } 
+    	return $data;
     }
