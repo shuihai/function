@@ -1,6 +1,14 @@
+ //控制器里 $this->display();
+ $.post("{:U('Home/Error/index')}", {
+                title: "身份证验证失败",
+                message: "身份证验证失败：readcard失败: " + pp,
+                okurl: "{:U('Loan/index')}",
+                cancleurl: "{:U('Index/firstmenu')}"
+            }, function (result) {
+                $("body").html(result); //这里用的巧妙
+            });
 
-
-sql语句
+//sql语句
 $data = $user->query("select u.id,IF(u.portrait != '',CONCAT('http://".$_SERVER['HTTP_HOST'].__APP__."',u.portrait),'')  from user as u;
 
 模型的query和execute方法 同样支持预处理机制，例如：
