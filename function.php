@@ -1,3 +1,7 @@
+//tp的一些标签用法
+<if condition="!empty($vo['activetime'])">{$vo['activetime']|date='Y-m-d',###}</if>
+
+
  //控制器里 $this->display();
  $.post("{:U('Home/Error/index')}", {
                 title: "身份证验证失败",
