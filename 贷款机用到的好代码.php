@@ -16,3 +16,9 @@
                     }
                 },'json')
     省略
+    
+ //在指定DIV下的第二个P后面增加元素如何实现
+<script type="text/javascript">
+    var insertHtml='<div>我是插入的元素。</div>'
+    $('#divId').find('p').eq(1).after(insertHtml);
+</script>
