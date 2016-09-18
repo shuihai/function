@@ -22,3 +22,6 @@
     var insertHtml='<div>我是插入的元素。</div>'
     $('#divId').find('p').eq(-2).after(insertHtml);
 </script>
+
+//js生成url记得编码
+phoneurl=encodeURI(encodeURI(phoneurl));
