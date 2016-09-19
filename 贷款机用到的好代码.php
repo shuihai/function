@@ -54,5 +54,9 @@ phoneurl=encodeURI(encodeURI(phoneurl));
                             alert(data.info);
                         }
                    }
+                  error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        if(XMLHttpRequest.status==500){
+                            alert('添加失败,请重试');
+                 }; 
                });
             });
